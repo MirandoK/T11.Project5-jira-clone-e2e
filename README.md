@@ -2,7 +2,7 @@
 
 ## Installation
 
-Requires [Node.js](https://nodejs.org/) v14+ to run.
+Requires [Node.js]npm) v14+ to run.
 
 Install the dependencies.
 
