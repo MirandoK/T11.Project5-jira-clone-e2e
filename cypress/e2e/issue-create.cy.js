@@ -79,7 +79,7 @@ describe('Issue create', () => {
       });
   });
 
-  it.only('Should create an issue and validate it successfully 2', () => {
+  it('Should create custom issue and validate it successfully', () => {
     // System finds modal for creating issue and does next steps inside of it
     cy.get('[data-testid="modal:issue-create"]').within(() => {
       // Type value to description input field
