@@ -1,4 +1,3 @@
-import IssueModal from '../pages/IssueModal';
 import { faker } from '@faker-js/faker';
 
 describe('Issue create', () => {
@@ -11,6 +10,16 @@ describe('Issue create', () => {
         cy.visit(url + '/board?modal-issue-create=true');
       });
   });
+
+  function modalclosedReload() {
+    // Assert that modal window is closed and successful message is visible
+    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
+    cy.contains('Issue has been successfully created.').should('be.visible');
+    // Reload the page to be able to see recently created issue
+    cy.reload();
+    // Assert that successful message has dissappeared after the reload
+    cy.contains('Issue has been successfully created.').should('not.exist');
+  }
 
   it('Should create an issue and validate it successfully', () => {
     // System finds modal for creating issue and does next steps inside of it
@@ -39,13 +48,9 @@ describe('Issue create', () => {
       // Click on button "Create issue"
       cy.get('button[type="submit"]').click();
     });
-    // Assert that modal window is closed and successful message is visible
-    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
-    cy.contains('Issue has been successfully created.').should('be.visible');
-    // Reload the page to be able to see recently created issue
-    // Assert that successful message has dissappeared after the reload
-    cy.reload();
-    cy.contains('Issue has been successfully created.').should('not.exist');
+
+    modalclosedReload();
+
     // Assert than only one list with name Backlog is visible and do steps inside of it
     cy.get('[data-testid="board-list:backlog"]')
       .should('be.visible')
@@ -96,13 +101,8 @@ describe('Issue create', () => {
       cy.get('button[type="submit"]').click();
     });
 
-    // Assert that modal window is closed and successful message is visible
-    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
-    cy.contains('Issue has been successfully created.').should('be.visible');
-    // Reload the page to be able to see recently created issue
-    // Assert that successful message has dissappeared after the reload
-    cy.reload();
-    cy.contains('Issue has been successfully created.').should('not.exist');
+    modalclosedReload();
+
     // Assert than only one list with name Backlog is visible and do steps inside of it
     cy.get('[data-testid="board-list:backlog"]')
       .should('be.visible')
@@ -115,7 +115,6 @@ describe('Issue create', () => {
           .find('p')
           .contains('Bug');
       });
-
     // Assert that correct avatar and type icon are visible
     cy.get('[data-testid="board-list:backlog"]')
       .contains('Bug')
@@ -129,19 +128,17 @@ describe('Issue create', () => {
   it('Should create and validate issue (Task) using the random data plugin', () => {
     const randomWord = faker.lorem.word();
     const randomWords = faker.lorem.words(7);
-
     cy.log(randomWord);
     cy.log(randomWords);
+
     // System finds modal for creating issue and does next steps inside of it
     cy.get('[data-testid="modal:issue-create"]').within(() => {
       // Open issue type dropdown and clear default type
       cy.get('[data-testid="select:type"]').click();
       cy.get('[data-testid="icon:close"]').click();
-      // Choose Task
-      cy.get('[data-testid="select-option:Task"]')
-        .trigger('mouseover')
-        .trigger('click');
-      cy.get('[data-testid="icon:task"]').should('be.visible');
+      // Choose Task and assert it has been selected
+      cy.get('[data-testid="select-option:Task"]').click();
+      cy.get('[data-testid="select:type"]').should('contain', 'Task');
       // Type value to description input field
       cy.get('.ql-editor').type(randomWords);
       cy.get('.ql-editor').should('have.text', randomWords);
@@ -161,13 +158,8 @@ describe('Issue create', () => {
       cy.get('button[type="submit"]').click();
     });
 
-    // Assert that modal window is closed and successful message is visible
-    cy.get('[data-testid="modal:issue-create"]').should('not.exist');
-    cy.contains('Issue has been successfully created.').should('be.visible');
-    // Reload the page to be able to see recently created issue
-    // Assert that successful message has dissappeared after the reload
-    cy.reload();
-    cy.contains('Issue has been successfully created.').should('not.exist');
+    modalclosedReload();
+
     // Assert than only one list with name Backlog is visible and do steps inside of it
     cy.get('[data-testid="board-list:backlog"]')
       .should('be.visible')
