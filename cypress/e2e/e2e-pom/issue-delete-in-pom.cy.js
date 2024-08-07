@@ -20,6 +20,6 @@ describe('Issue delete', () => {
   });
 
   it('Should cancel deletion process successfully', () => {
-    //add steps to start deletion proces but cancel it
+    //add steps to start deletion process but cancel it
   });
 });
