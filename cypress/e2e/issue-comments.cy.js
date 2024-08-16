@@ -15,8 +15,9 @@ describe('Issue comments creating, editing and deleting', () => {
   const getCommentInsertionField = () =>
     cy.get('textarea[placeholder="Add a comment..."]');
   const getSavedCommentField = () => cy.get('[data-testid="issue-comment"]');
-  const getSaveButton = () => cy.contains('button', 'Save');
-  const getEditButton = () => cy.contains('Edit');
+  const getSaveButton = () =>
+    cy.contains('button', 'Save').click().should('not.exist');
+  const getEditButton = () => cy.contains('Edit').click().should('not.exist');
   const getDeleteButton = () => cy.contains('button', 'Delete');
   const getDeletionConfirmationModal = () =>
     cy.get('[data-testid="modal:confirm"]');
@@ -30,7 +31,7 @@ describe('Issue comments creating, editing and deleting', () => {
     //Creating a new comment:
     getIssueDetailsModal().within(() => {
       cy.contains('Add a comment...').type(comment);
-      getSaveButton().click().should('not.exist').wait(3000);
+      getSaveButton().wait(3000);
       getSavedCommentField()
         .should('have.length', '2')
         .first()
@@ -40,20 +41,19 @@ describe('Issue comments creating, editing and deleting', () => {
       getSavedCommentField()
         .first()
         .within(() => {
-          getEditButton().click().should('not.exist');
+          getEditButton();
         });
       getCommentInsertionField()
         .should('contain', comment)
         .clear()
         .type(editedComment);
-      getSaveButton().click().should('not.exist');
+      getSaveButton();
       getSavedCommentField()
         .should('have.length', '2')
         .first()
         .should('contain', editedComment)
         .and('not.contain', comment);
     });
-
     //Deleting the previously edited comment:
     getSavedCommentField().first().contains('Delete').click();
     getDeletionConfirmationModal().should(
