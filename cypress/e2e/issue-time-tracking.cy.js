@@ -1,4 +1,6 @@
-/*POM approach - before running, download TimeTracking.js to your ../pages folder from here:
+/*POM approach - before running, download TimeTracking.js to your ../pages folder and update import path if needed:
+
+https://github.com/Odysseus777/T11.Project5-jira-clone-e2e/blob/master/cypress/pages/TimeTracking.js
 
 */
 
