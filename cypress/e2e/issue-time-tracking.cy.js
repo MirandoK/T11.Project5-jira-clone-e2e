@@ -30,21 +30,18 @@ describe('Time tracking', () => {
     // Add estimation 10h and validate:
     TimeTracking.insertEstimateHours(originalEstimateHours);
     TimeTracking.closeIssueDetailModal();
-    cy.reload();
     TimeTracking.getIssueDetailModal();
     TimeTracking.validateEstimationValue(originalEstimateHours);
-    TimeTracking.ValidateTimeTrackerSync(originalEstimateHours);
+    TimeTracking.validateTTrackerSyncOriginal(originalEstimateHours);
     // Update estimation to 20h and validate:
     TimeTracking.insertEstimateHours(updatedEstimateHours);
     TimeTracking.closeIssueDetailModal();
-    cy.reload();
     TimeTracking.getIssueDetailModal();
     TimeTracking.validateEstimationValue(updatedEstimateHours);
-    TimeTracking.ValidateTimeTrackerSync(updatedEstimateHours);
+    TimeTracking.validateTTrackerSyncUpdated(updatedEstimateHours);
     // Remove estimation and validate removal:
     TimeTracking.clearEstimateHours();
     TimeTracking.closeIssueDetailModal();
-    cy.reload();
     TimeTracking.getIssueDetailModal();
     TimeTracking.validateEstimateHoursRemoval();
   });
@@ -58,10 +55,10 @@ describe('Time tracking', () => {
     TimeTracking.insertTimeRemaining(timeRemaining);
     TimeTracking.clickDoneButton();
     TimeTracking.checkNoTimeLoggedIsNotVisible();
-    TimeTracking.checkTimeLoggedRemaining(timeSpent, timeRemaining);
+    TimeTracking.checkNewTimeLoggedRemaining(timeSpent, timeRemaining);
     // Remove logged time:
     TimeTracking.clearTimeTrackingModal();
     TimeTracking.checkNoTimeLoggedIsVisible();
-    TimeTracking.ValidateTimeTrackerSync(originalEstimateHours);
+    TimeTracking.validateTTrackerSyncOriginal(originalEstimateHours);
   });
 });

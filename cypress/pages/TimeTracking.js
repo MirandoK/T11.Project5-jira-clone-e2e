@@ -7,8 +7,6 @@ class TimeTracking {
     this.timeSpent = 'Time spent';
     this.timeRemaining = 'Time remaining';
     this.buttonName = 'button';
-    this.newTimeLogged = '2h logged';
-    this.newTimeRemaining = '5h remaining';
     this.closeDetailModalButton = '[data-testid="icon:close"]';
   }
 
@@ -46,10 +44,17 @@ class TimeTracking {
     });
   }
 
-  ValidateTimeTrackerSync(originalEstimateHours, updatedEstimateHours) {
-    cy.contains(originalEstimateHours, updatedEstimateHours).should(
-      'exist'
-    );
+  validateTTrackerSyncOriginal(originalEstimateHours) {
+    cy.contains(`${originalEstimateHours}h estimated`).should('exist');
+  }
+
+  validateTTrackerSyncUpdated(updatedEstimateHours) {
+    cy.contains(`${updatedEstimateHours}h estimated`).should('exist');
+  }
+
+  checkNewTimeLoggedRemaining(timeSpent, timeRemaining) {
+    cy.contains(`${timeSpent}h logged`).should('exist');
+    cy.contains(`${timeRemaining}h remaining`).should('exist');
   }
 
   getTimeTrackingModal() {
@@ -103,11 +108,6 @@ class TimeTracking {
     cy.contains('No time logged').should('not.exist');
   }
 
-  checkTimeLoggedRemaining() {
-    cy.contains(this.newTimeLogged).should('exist');
-    cy.contains(this.newTimeRemaining).should('exist');
-  }
-
   clickDoneButton() {
     cy.get(this.buttonName).contains('Done').click();
     cy.get(this.timeTrackingModal).should('not.exist');
@@ -118,6 +118,7 @@ class TimeTracking {
       cy.get(this.closeDetailModalButton).first().click();
     });
     cy.get(this.issueDetailModal).should('not.exist');
+    cy.reload();
   }
 }
 
