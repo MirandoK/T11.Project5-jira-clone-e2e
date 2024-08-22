@@ -192,4 +192,27 @@ describe('Issue create', () => {
       );
     });
   });
+  
+
+  // Assignment 3: Solve JavaScript tasks (BONUS)
+  it('Should remove redundant spaces from the issue title on the board', () => {
+    const title = '   Cerebrum        Hub!    ';
+    const correctTitle = 'Cerebrum Hub!';
+
+    // Create an issue with unnecessary spaces
+    cy.get('.ql-editor').type('Short description');
+    cy.get('input[name="title"]').wait(3000).type(title);
+    cy.get('button[type="submit"]').click();
+
+    // Closing modal and reloading the page
+    modalclosedReload();
+
+    // Asserting the new issue on the board does not have extra spaces
+    cy.get('[data-testid="list-issue"]')
+      .first()
+      .invoke('text')
+      .then((visibleTitle) => {
+        expect(visibleTitle.replace(/\s+/g, ' ').trim()).to.equal(correctTitle);
+      });
+  });
 });
